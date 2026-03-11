@@ -23,7 +23,7 @@ lang: "both"
 # —— 摘要设置 ——
 # mode: none / heuristic / llm
 summary:
-  mode: llm # mode: "heuristic"
+  mode: none # mode: "heuristic"
   # scope: tldr / full / both
   scope: "both"
 
@@ -37,7 +37,7 @@ email:
   tls: "ssl"  # auto / ssl / starttls
   debug: false     # true 可打印 SMTP 调试日志
   detail: "full"  # simple / full
-  max_items: 30
+  max_items: 5
   attach_md: true  # 是否开启Markdown附件
   attach_pdf: false  # 是否开启PDF附件
 
