@@ -46,7 +46,7 @@ llm:
   provider: "openai-compatible"     # 兼容 OpenAI SDK 的服务
   # 硅基流动的版本
   base_url: "http://ipads.chat.gpt:3006/v1#"
-  model: "deepseek-chat"
+  model: "gpt-5-mini"
   api_key_env: "OPENAI_COMPAT_API_KEY"
   # Deepseek的版本
   # base_url: "https://api.deepseek.com"
