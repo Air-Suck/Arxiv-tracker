@@ -23,7 +23,7 @@ lang: "both"
 # —— 摘要设置 ——
 # mode: none / heuristic / llm
 summary:
-  mode: heuristic # mode: "heuristic"
+  mode: llm # mode: "heuristic"
   # scope: tldr / full / both
   scope: "both"
 
