@@ -44,7 +44,6 @@ email:
 # —— LLM（DeepSeek/OpenAI 兼容） ——
 llm:
   provider: "openai-compatible"     # 兼容 OpenAI SDK 的服务
-  # 硅基流动的版本
   base_url: "http://ipads.chat.gpt:3006/v1/chat/completions"
   model: "gpt-5-mini"
   api_key_env: "OPENAI_COMPAT_API_KEY"
@@ -67,6 +66,10 @@ llm:
 # —— 中文翻译设置（用 LLM 翻译 title/summary） ——
 translate:
   enabled: true         # 是否启用
+  # 翻译后端：llm / google
+  # - llm: 走 llm.base_url + api_key
+  # - google: 非 LLM 免费通道（基于 deep-translator），无需 API Key
+  provider: "google"
   lang: "zh"            # 目前只需中文；也可扩展 en/ja 等
   fields: ["title", "summary"]   # 可扩：["title","summary","comments"]
 

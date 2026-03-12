@@ -7,6 +7,7 @@ from .parser import parse_feed
 from .output import save_json, save_markdown
 from .summarizer import build_two_stage_summary
 from .llm import call_llm_translate
+from .translate import translate_item_non_llm
 from .email_template import render_email_html
 from .exporter import md_to_pdf
 
@@ -308,24 +309,39 @@ def run(config_path, categories, keywords, exclude_keywords, logic, max_results,
         # 4) 翻译（中文）
         translations = {}
         if trans_cfg.get("enabled") and (trans_cfg.get("lang", "zh") == "zh"):
-            api_key = (llm_cfg.get("api_key")
-                       or os.getenv(llm_cfg.get("api_key_env") or "OPENAI_API_KEY", ""))
-            if not api_key:
-                click.secho("[Translate] 跳过：未找到 LLM API Key（配置 llm.api_key 或设置环境变量 {}）"
-                            .format(llm_cfg.get("api_key_env") or "OPENAI_API_KEY"), fg="yellow")
+            trans_provider = str(trans_cfg.get("provider", "llm")).strip().lower()
+            trans_fields = trans_cfg.get("fields") or ["title", "summary"]
+            if trans_provider in ("llm", "openai", "openai-compatible"):
+                api_key = (llm_cfg.get("api_key")
+                           or os.getenv(llm_cfg.get("api_key_env") or "OPENAI_API_KEY", ""))
+                if not api_key:
+                    click.secho("[Translate] 跳过：未找到 LLM API Key（配置 llm.api_key 或设置环境变量 {}）"
+                                .format(llm_cfg.get("api_key_env") or "OPENAI_API_KEY"), fg="yellow")
+                else:
+                    for it in items:
+                        sid = it.get("id") or ""
+                        try:
+                            translations[sid] = call_llm_translate(
+                                item=it, target_lang="zh",
+                                base_url=llm_cfg.get("base_url", ""),
+                                model=llm_cfg.get("model", ""),
+                                api_key=api_key,
+                                system_prompt=llm_cfg.get("system_prompt_translate_zh", "")
+                            )
+                        except Exception as e:
+                            click.secho(f"[Translate] 失败 {sid[:18]}...: {e}", fg="red")
             else:
                 for it in items:
                     sid = it.get("id") or ""
                     try:
-                        translations[sid] = call_llm_translate(
-                            item=it, target_lang="zh",
-                            base_url=llm_cfg.get("base_url", ""),
-                            model=llm_cfg.get("model", ""),
-                            api_key=api_key,
-                            system_prompt=llm_cfg.get("system_prompt_translate_zh", "")
+                        translations[sid] = translate_item_non_llm(
+                            item=it,
+                            target_lang="zh",
+                            fields=trans_fields,
+                            provider=trans_provider,
                         )
                     except Exception as e:
-                        click.secho(f"[Translate] 失败 {sid[:18]}...: {e}", fg="red")
+                        click.secho(f"[Translate:{trans_provider}] 失败 {sid[:18]}...: {e}", fg="red")
 
         # 5) 终端预览
         if not items:
