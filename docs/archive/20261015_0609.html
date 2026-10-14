@@ -1,0 +1,902 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>arXiv 论文速递</title><style>
+:root {
+  --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#667085; --border:#e5e7eb; --acc:#2563eb;
+}
+:root[data-theme="dark"] {
+  --bg:#0b0f17; --card:#111827; --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --acc:#2563eb;
+}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;}
+.container{max-width:900px;margin:0 auto;padding:18px;}
+.header{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:8px 0 16px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}
+.badge{font-size:12px;color:#111827;background:var(--acc);padding:2px 8px;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.title{font-weight:700;margin:0 0 6px 0;font-size:18px}
+.meta-line{color:var(--muted);font-size:13px;margin:2px 0}
+.links a{color:var(--acc);text-decoration:none;margin-right:12px}
+.detail{margin-top:10px;background:rgba(2,6,23,.03);border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+summary{cursor:pointer;color:var(--acc)}
+.mono{white-space:pre-wrap;background:rgba(2,6,23,.03);border:1px solid var(--border);padding:10px;border-radius:10px}
+.row{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width: 860px) {
+  .row-2{grid-template-columns:1fr 1fr}
+}
+.footer{color:var(--muted);font-size:13px;margin:20px 0 10px}
+.hr{height:1px;background:var(--border);margin:14px 0}
+.history-list a{display:block;color:var(--acc);text-decoration:none;margin:4px 0}
+.controls{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--border);background:var(--card);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--text)}
+.btn:hover{border-color:var(--acc)}
+</style>
+<script>
+(function() {
+  const root = document.documentElement;
+  function apply(t) {
+    if (t==='dark') root.setAttribute('data-theme','dark');
+    else if (t==='light') root.removeAttribute('data-theme');
+    else {
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        root.setAttribute('data-theme','dark');
+      else root.removeAttribute('data-theme');
+    }
+  }
+  let t = localStorage.getItem('theme') || 'light';
+  if (!['light','dark','auto'].includes(t)) t='light';
+  apply(t);
+  window.__toggleTheme = function() {
+    let cur = localStorage.getItem('theme') || 'light';
+    if (cur==='light') cur='dark';
+    else if (cur==='dark') cur='auto';
+    else cur='light';
+    localStorage.setItem('theme', cur);
+    apply(cur);
+    const el=document.getElementById('theme-label');
+    if(el) el.textContent = cur.toUpperCase();
+  }
+  window.__expandAll = function(open) {
+    document.querySelectorAll('details').forEach(d => d.open = !!open);
+  }
+})();
+</script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>arXiv 论文速递</h1>
+      <div style="display:flex;gap:10px;align-items:center">
+        
+<div class="controls">
+  <button class="btn" onclick="__toggleTheme()">Theme: <span id="theme-label" style="margin-left:6px">AUTO</span></button>
+  <button class="btn" onclick="__expandAll(true)">Expand All</button>
+  <button class="btn" onclick="__expandAll(false)">Collapse All</button>
+</div>
+
+        <span class="badge">2026-10-15 06:09</span>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div>Snapshot: 20261015_0609</div>
+    <div class="row"><div class="card">
+<div class="title">ChunkAct: Action Chunking for Agentic Robotics</div>
+<div class="meta-line">Authors: Bingxin Xu, Wenrui Bao, Xinxin Liu, Jiawei Zhou, Yuzhang Shang, Emilio Ferrara</div>
+<div class="meta-line">First: 2026-10-13T17:59:57+00:00 · Latest: 2026-10-13T17:59:57+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18874v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18874v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Agentic robotics places a large language model (LLM) agent in the robot control loop, where it composes perception, motion, and vision-language-action (VLA) tools under the guidance of a memory and thereby generalizes to new tasks without retraining. This generality comes at a steep price in efficiency. Every primitive requires a round of LLM reasoning over the full interaction history, so the cost of an episode grows with the number of primitives. We find this reasoning largely redundant: once a sub-goal is chosen, its primitives follow a routine already prescribed by memory. We present ChunkAct, which introduces action chunking to agentic robotics. Online, a single call launches a chunk of chained primitives, which executes autonomously and returns control only upon failure. Offline, ChunkAct compiles the memory into these chunks, so execution is memory-free at test time and the planner is reserved for decisions that require reasoning. LLM computation therefore scales with the number of decisions rather than the number of primitives. On LIBERO-Pro, ChunkAct improves task success by 5.0 points over the state of the art in agentic robotics while requiring 2.9x fewer LLM calls, 4.4x fewer input tokens, and 2.3x fewer output tokens.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Agentic robotics places a large language model (LLM) agent in the robot control loop, where it composes perception, motion, and vision-language-action (VLA) tools under the guidance of a memory and thereby generalizes to new tasks without retraining.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">What Matters in Quality-Aware VLA Pretraining: A Benchmark and Empirical Study</div>
+<div class="meta-line">Authors: Mingxuan Yan, Litian Gong, Dihong Huang, Zhixu Li, Tianyu Zhang, Wenqian Zhang, Hefeifei Jiang, Peihao Li, Jian Zhang, Mengfei Zhao, Yikai Tang, Hai Zhai, Zehao Wang, Ruijian Liang, Yanjia Huang, Lin Shao, Changliu Liu, Kaiyu Hang, Zhiwen Fan, Masayoshi Tomizuka, Jianfei Yang, Jiachen Li</div>
+<div class="meta-line">First: 2026-10-13T17:59:52+00:00 · Latest: 2026-10-13T17:59:52+00:00</div>
+<div class="meta-line">Comments: Project Website: https://axis-bench.github.io/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18869v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18869v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://axis-bench.github.io/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">How should demonstration quality be used during vision-language-action (VLA) pretraining to improve performance after target-task fine-tuning? We compare weighting, filtering, and conditioning across reward definitions and label granularities using 5,000 naturally suboptimal human demonstrations and 24 target tasks. Within each VLA, we match demonstrations and training budgets. Additional comparisons examine pretraining data size and the roles of quality tags during fine-tuning and inference. Across three VLAs, we find that approach-aware episode conditioning improves mean success over plain behavioral cloning; conditioning and filtering favor episode and chunk labels, respectively, on average, with model-dependent reversals; and constant-tag fine-tuning improves mean success after conditioned pretraining with either tagged or untagged inference. We introduce AXIS-Bench to support these controlled comparisons. Built on crowdsourced simulation demonstrations, it provides recorded object and contact states for recomputing quality labels on shared trajectories. Replayable trajectories support workspace-aligned rendering and user-defined real-world target tasks. In our real-world experiment, simulation pretraining raises success from 9.6\% to 31.7\%. Project page: https://axis-bench.github.io/.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">How should demonstration quality be used during vision-language-action (VLA) pretraining to improve performance after target-task fine-tuning?</div>
+</details>
+</div>
+<div class="card">
+<div class="title">LIBERO-RIG: A Hardware-Setup Robustness Benchmark for Vision-Language-Action Models</div>
+<div class="meta-line">Authors: Andrea Yaoyun Cui, Hanyu Wang, Xinyi Wang, Bangzheng Li, Lin Zhang, Zhenggang Tang, Shyamal Buch, Dejia Xu, Matthew Tancik</div>
+<div class="meta-line">First: 2026-10-13T17:57:18+00:00 · Latest: 2026-10-13T17:57:18+00:00</div>
+<div class="meta-line">Comments: 30 pages (4 pages main text plus appendix), 15 figures, 18 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18843v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18843v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Robot policies are expected to generalize across deployment environments, including variations in the robot itself: cameras are bumped and remounted, calibrations drift, controllers run at different rates, and end-effector pads wear down. We present LIBERO-RIG, a benchmark that perturbs only the robot&#x27;s hardware and setup while holding every LIBERO task fixed. The benchmark spans eleven perturbation axes, including camera mounting and optics, camera-to-arm calibration, actuation gain, control rate, proprioceptive noise, base pose, table height, and gripper pads. Each axis has five severity levels, yielding 210 conditions across the four LIBERO suites. We evaluate nine recent vision-language-action models using 500 episodes per condition and substantiate each finding with rigorous statistical tests. Pooled success falls from 0.932 to 0.767 at the middle severity and 0.509 at the highest severity. Performance degradation varies substantially across perturbation axes and action interfaces, and training on visual perturbations does not mitigate faults that leave camera images unchanged. We release the benchmark together with manifests specifying the fixed perturbation parameters for each episode.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Robot policies are expected to generalize across deployment environments, including variations in the robot itself: cameras are bumped and remounted, calibrations drift, controllers run at different rates, and end-effector pads wear down.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Plan-Bench: Can Existing VLMs Go Well Beyond Perception to Reason and Plan in Embodied Worlds?</div>
+<div class="meta-line">Authors: Juntong Feng, Qingan Liu, Jingru Dong, Yue Zhu, Weiming Zheng, Yujie Cheng, Xinzhe Han, Shuai Hao, Yunzhi Zhuge, Haiwen Diao, Huchuan Lu</div>
+<div class="meta-line">First: 2026-10-13T17:55:20+00:00 · Latest: 2026-10-13T17:55:20+00:00</div>
+<div class="meta-line">Comments: 24 pages, 11 figures, 10 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18836v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18836v1">PDF</a> · <a href="https://github.com/MinneFeng/Plan-Bench">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-Language Models (VLMs) have achieved strong performance in visual perception and spatial reasoning, leading to growing interest in using them as high-level planners for embodied AI. However, physical tasks require models to integrate spatial information, reason over temporal states, and generate multi-step plans under various constraints, raising the question of whether current VLMs can reliably support such reasoning and planning independently of execution. We introduce Plan-Bench, a benchmark for evaluating the high-level reasoning and multi-step planning capabilities of VLMs relevant to embodied worlds, while isolating the influence of action execution. It covers three complementary dimensions, spanning 16 subclasses and 699 curated samples. Extensive evaluation of 28 VLMs reveals room for improvement, with even the strongest model achieving only 75.0% accuracy. We further find that model scaling generally improves these capabilities. Ablation studies also indicate larger models show increasing potential as high-level planners. Overall, Plan-Bench provides a lightweight probe for evaluating VLMs&#x27; reasoning and planning capabilities relevant to embodied environments and assessing their potential as decision makers for physical tasks. Our benchmark and code are available at https://github.com/MinneFeng/Plan-Bench.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-Language Models (VLMs) have achieved strong performance in visual perception and spatial reasoning, leading to growing interest in using them as high-level planners for embodied AI.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">SEAR: Self-Evolving Agentic Robotics</div>
+<div class="meta-line">Authors: Xinyi Wang, Bangzheng Li, Hanyu Wang, Lin Zhang, Andrea Yaoyun Cui, Zhenggang Tang, Shyamal Buch, Dejia Xu</div>
+<div class="meta-line">First: 2026-10-13T17:40:20+00:00 · Latest: 2026-10-13T17:40:20+00:00</div>
+<div class="meta-line">Comments: 16 pages</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18792v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18792v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Frontier language-model agents can now improve robots on their own: they write control code, test it, and keep what works as skills and memories for the next task. We introduce SEAR (Self-Evolving Agentic Robotics), a framework and benchmark built around two questions. Is the agent really learning, or just trying more often? And does what it learns still help on new tasks, in a new simulator, and on a real robot? The framework runs an agent in three modes: it writes code that becomes the policy (code-as-policy), acts live in the control loop (agent-as-policy), or works as a researcher that fine-tunes a vision-language-action model (auto-research). The benchmark adds controls that separate retained experience from repeated attempts, familiar tasks, privileged simulator state, larger budgets, and luck. Across seven frontier language models, 330 simulated and five physical tasks, and over four years of agent runtime, we highlight three findings. First, the learning curve of a robotic agent depends both on the overall time budget and the task difficulty relative to model capability. Harder tasks make longer sessions worthwhile; on easier tasks, re-rolling short attempts does just as well. Second, control code and shared routines transfer across tasks and simulators, while task-specific solutions do not. On a real robot, we observe a performance gap between agent-designed practice and novel human-designed scenes. Third, different models evolve more effectively in different ways. Some do best acting live, others writing code first. And a text-only model keeps pace with a comparable multimodal one: perception helps with error assessment, but agentic reasoning and tool use can matter more. We release the benchmark and codebase to support future research.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Frontier language-model agents can now improve robots on their own: they write control code, test it, and keep what works as skills and memories for the next task.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Fewer Tokens, Better Action: GPT-6 Astra Robot Agents with 14% Higher Success Rate but 65% Fewer Tokens</div>
+<div class="meta-line">Authors: Ruiyang Si, Jianxin Bi, Shunyu Yang, Rui Ni, Wenbo Huang, Qiang Wang, Shulong Jiang, Yintianrun Zhang, Feixiang Ruan, Kewei Zhang, Duomin Wang, Xiuyu Li, Haiwen Feng, Zhen Dong, Daquan Zhou</div>
+<div class="meta-line">First: 2026-10-01T16:07:49+00:00 · Latest: 2026-10-13T17:21:36+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.01939v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.01939v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language model (VLM) agents can control robots through visual feedback and action primitives, but repeated LLM calls and redundant observations incur substantial token overhead. We introduce PyRUA-Lean, an interactive code-execution framework in which the agent composes robot primitives, including vision-language-action (VLA) policies, into Python cells that check and retry locally and return only the images and state they request. Across 700 simulated task instances from LIBERO-PRO, RoboTwin 2.0, and RoboCasa365, it raises success from 63.1% to 71.7% over tool calling with the same GPT-6 Astra planner and primitives, using 49% fewer LLM calls and 65% fewer input tokens on jointly solved instances. On RoboDojo, without any VLA policy or privileged information, it reaches 51.6% average success rate (Score 58.2), 19.4 points above the top entry of the public leaderboard. Based on the PyRUA-Lean framework, we train PyRUA-Lean Coder v0.1-4B, an open 4B model, with GRPO on 45 LIBERO-PRO instances; it improves from 18.8% to 44.1% on unseen task instances, surpassing the Qwen3.5-27B base model.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language model (VLM) agents can control robots through visual feedback and action primitives, but repeated LLM calls and redundant observations incur substantial token overhead.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">ACCRUE: Continual Off-Policy Reinforcement Learning for Robot Foundation Models</div>
+<div class="meta-line">Authors: Changyeon Kim, Kimin Lee, Yashraj Narang, Yijie Guo</div>
+<div class="meta-line">First: 2026-10-13T15:53:26+00:00 · Latest: 2026-10-13T15:53:26+00:00</div>
+<div class="meta-line">Comments: Project website: https://accrue-rl.github.io</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18596v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18596v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://accrue-rl.github.io">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Reinforcement learning (RL) post-training improves robot foundation models (RFMs) beyond their demonstrations, but real-world deployment demands more: learning new tasks efficiently while retaining previously acquired behaviors. Existing continual RL methods on top of VLAs mitigate forgetting but rely on on-policy updates with limited forward transfer, whereas off-policy methods improve single-task sample efficiency without addressing learner persistence across tasks. We propose ACCRUE, a continual off-policy RL framework that carries lightweight actor and critic networks across tasks, allowing each stage to reuse behavioral and value knowledge acquired through prior RL. The inherited critic adapts only on current-task transitions and guides current-task actor learning, while prior behavior is preserved by distilling the actor toward cached targets on a small number of retained episodes. Fixed visual features keep the inherited learner and its replay compatible with base-policy updates. Across contact-rich assembly sequences in simulation and on real-robot hardware, ACCRUE accelerates subsequent-task learning with near-zero forgetting and significantly reduces real-robot training time by 31.0\% to 68.5\%.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Reinforcement learning (RL) post-training improves robot foundation models (RFMs) beyond their demonstrations, but real-world deployment demands more: learning new tasks efficiently while retaining previously acquired behaviors.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">MemoryVLN: From Ego-Aware Memory Representation to Cross-Context Memory Reuse in Vision-Language Navigation</div>
+<div class="meta-line">Authors: Xueyao Wei, Yifei Wang, Delun Li, Shaoan Wang, Junzhi Yu, Wenjie Song, Xingyu Chen</div>
+<div class="meta-line">First: 2026-10-13T14:40:04+00:00 · Latest: 2026-10-13T14:40:04+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18478v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18478v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Large vision-language models (LVLMs) have shown strong potential for embodied vision-language navigation (VLN), yet their performance degrades on long-horizon trajectories due to context-length limits, redundant historical observations, and unstable spatial alignment across time. These issues make it difficult to both compress long navigation histories and reliably reuse past spatial experience. To address these limitations, we propose \textbf{MemoryVLN}, a unified memory-driven navigation system built around memory construction and management. During memory construction, \emph{Long Sequence Compression} employs forgetting-curve-inspired temporal sampling to preserve dense recent evidence and sparse yet representative distant observations under a limited token budget. \emph{Ego-Aware Memory Representation} further integrates 2D semantic tokens, 3D geometric tokens, and 6D agent poses, allowing each memory to encode both what was observed and where it was observed. During memory management, \emph{Hierarchical Memory Bank} maintains in-episode and context-level memories through cross-context warm-start and confidence-controlled write-back. \emph{Memory Enhancement} then retrieves the Top-$K$ relevant memories according to the current navigation state and fuses them with the current visual tokens. Together, these mechanisms transform raw navigation history into compact, spatially grounded, selectively retrievable, and reusable navigation experience. Extensive experiments on R2R-CE and RxR-CE demonstrate consistent improvements over the state-of-the-art baselines by a substantial margin (i.e., 2\% and 6.5\% in successful rate).</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Large vision-language models (LVLMs) have shown strong potential for embodied vision-language navigation (VLN), yet their performance degrades on long-horizon trajectories due to context-length limits, redundant historical observations, and unstable spatial alignment across time.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Thinker-WM: A Unified World Model with Shared Multimodal Representations for Embodied Intelligence</div>
+<div class="meta-line">Authors: Thinker Team, Peng Gao, Jichao Jiao, Chen Liao, Daqin Luo, Yiming Ma, Baiyu Pan, Hailin Shi, Jiyuan Wang, Xiangming Xu, Xiongwei Zhao</div>
+<div class="meta-line">First: 2026-10-13T14:18:47+00:00 · Latest: 2026-10-13T14:18:47+00:00</div>
+<div class="meta-line">Comments: \href{https://thinkercosmos.ubtrobot.com/thinker-wm}{Project Page}</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.18447v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.18447v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">World models have emerged as a promising paradigm for embodied AI, yet existing systems often remain fragmented in the modalities they model and the functions they support. In particular, visual dynamics, geometric structure, and executable action are commonly coupled through separate interfaces or downstream modules rather than being jointly represented and evolved within a shared dynamics model. In this work, we present Thinker-WM, a unified multimodal world model that jointly models and generates RGB, metric depth, and robot action through a shared intermediate Unified Dynamics Transformer with modality-specific encoders and decoders. The model performs multimodal unification at the representation level: appearance, geometry, and action are transformed into a common dynamic representation and jointly evolved by shared parameters, while their distinct output structures are preserved. The same parameterization supports multiple functions, including joint video-action generation, world prediction, policy inference, action-conditioned generation, video-to-action generation, and inverse dynamics. To examine whether the shared representation captures action-related information, we introduce a lightweight motion probe that shows the frozen visual representation contains recoverable motion information. Thinker-WM is trained on a heterogeneous corpus comprising approximately 20K hours of egocentric video, 10K hours of real-robot data, and 1K hours of simulation data, including approximately 4K hours of real-robot data with aligned depth supervision. Extensive experiments demonstrate strong performance across embodied world-model evaluations. Thinker-WM ranks first on EWMBench, WorldOlympiad and WorldArena, while controlled studies further demonstrate the benefits of action conditioning, geometric interaction, and multi-function training within the shared representation.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">World models have emerged as a promising paradigm for embodied AI, yet existing systems often remain fragmented in the modalities they model and the functions they support.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Tactile Curiosity Drives Robot Interaction</div>
+<div class="meta-line">Authors: Klemens Iten, Alexander Proshkin, Bhavya Sukhija, Stelian Coros, Andreas Krause, Pieter Abbeel, Carmelo Sferrazza</div>
+<div class="meta-line">Venue: CoRL 2026</div>
+<div class="meta-line">First: 2026-09-30T16:49:40+00:00 · Latest: 2026-10-13T13:22:48+00:00</div>
+<div class="meta-line">Comments: 17 pages, 6 figures, 1 table. Accepted to the 10th Conference on Robot Learning (CoRL 2026), Austin, Texas, USA. Project website: https://go.klem.nz/tacex</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2609.40134v3">Abs</a> · <a href="https://arxiv.org/pdf/2609.40134v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Mastering robot manipulation skills via reinforcement learning (RL) remains largely sample-inefficient. The most common RL algorithms rely on random action sampling to discover new strategies, resulting in agents that allocate most of their training budget to motions in free space, away from the contacts from which manipulation skills emerge. Existing intrinsic motivation methods based on model disagreement or epistemic uncertainty improve on isotropic noise, but they can also reward uncertainty in functionally irrelevant transitions, such as erratic motions in free space. In this work, we argue that tactile feedback provides a natural signal for exploration, and introduce TacEx, a framework that incorporates touch into epistemic uncertainty-driven exploration by decomposing model uncertainty across sensory modalities and directing curiosity toward the tactile channel. By anchoring curiosity to the sense of touch, TacEx drives the robot to discover complex contact dynamics, learning to manipulate and grasp objects without task rewards or expert demonstrations during exploration. The interaction-dense dataset collected through this tactile-driven curiosity supports offline learning of downstream pick-and-place policies without additional environment interaction. We further use tactile-driven exploration to post-train vision-language-action (VLA) models. Although the VLAs are initially pre-trained without tactile feedback, post-training with TacEx substantially improves downstream performance while remaining highly sample-efficient.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Mastering robot manipulation skills via reinforcement learning (RL) remains largely sample-inefficient.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Multi-View Relational Distillation for Spatial Reasoning with Vision-Language Models</div>
+<div class="meta-line">Authors: Kiet T. Nguyen, Hanbo Shim, Jinwoo Kim, Seunghoon Hong</div>
+<div class="meta-line">First: 2026-08-11T12:34:41+00:00 · Latest: 2026-10-13T11:26:41+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2608.10864v2">Abs</a> · <a href="https://arxiv.org/pdf/2608.10864v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language models (VLMs) have achieved strong image and video understanding, yet their visual-spatial representations remain geometrically fragile, leading to failures in spatial reasoning needed for embodied AI, robotics, and autonomous driving. Prior approaches to geometry grounding either fine-tune VLMs on spatial question answering, which can perpetuate spurious visual representations, or fuse features from large geometry-grounded vision models, which substantially increases model size at inference. Knowledge distillation from geometry-grounded vision models offers an alternative, but directly matching multi-view teacher features can disrupt the pretrained alignment between visual and textual representations, degrading object- and language-semantic capabilities. We propose multi-view relational distillation (MVRD), which distills patch-wise cosine similarities across views instead of the teacher features themselves. These relations encode geometric correspondences adequate for spatial understanding, while leaving the student representation underdetermined, allowing it to remain close to its pretrained vision- language space. Across representative VLMs, MVRD improves visual-spatial reasoning, outperforming supervised fine-tuning and feature distillation while approaching feature fusion methods with considerably fewer added parameters and lower latency. We show that MVRD makes visual representations more geometric while retaining language alignment, and generalizes to 3D scene understanding tasks such as object grounding, dense captioning, and question answering.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language models (VLMs) have achieved strong image and video understanding, yet their visual-spatial representations remain geometrically fragile, leading to failures in spatial reasoning needed for embodied AI, robotics, and autonomous driving.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">OxyGen: Unified KV Cache Management for VLA Inference under Multi-Task Parallelism</div>
+<div class="meta-line">Authors: Xiangyu Li, Huaizhi Tang, Xin Ding, Weijun Wang, Ting Cao, Yunxin Liu</div>
+<div class="meta-line">Venue: NeurIPS 2026</div>
+<div class="meta-line">First: 2026-03-15T13:23:56+00:00 · Latest: 2026-10-13T11:14:49+00:00</div>
+<div class="meta-line">Comments: NeurIPS 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2603.14371v3">Abs</a> · <a href="https://arxiv.org/pdf/2603.14371v3">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Embodied AI agents increasingly require parallel execution of multiple tasks, such as manipulation, conversation, and memory construction, from shared observations under distinct time constraints. Recent Mixture-of-Transformers (MoT) Vision-Language-Action Models (VLAs) support such heterogeneous outputs, yet existing inference systems incur redundant computation and resource contention when serving concurrent tasks on-device. We identify isolated KV cache management as the root cause. To address this, we propose unified KV cache management, an inference design that treats the KV cache as a first-class shared resource across tasks and control cycles. This abstraction enables two key optimizations: cross-task KV sharing eliminates redundant prefill of shared observations, while cross-frame continuous batching batches unfinished language requests from different frames and advances them within a per-frame decoding budget. We implement this design in OxyGen and evaluate $π_{0.5}$ on NVIDIA GeForce RTX 4090 and Jetson AGX Thor. OxyGen achieves up to 3.7$\times$ speedup over isolated execution, delivering over 200 tokens/s language throughput and 70 Hz action frequency simultaneously on RTX 4090. We also validate the design on Xiaomi-Robotics-0 and StarVLA across different backbones and expert configurations. We further demonstrate the inference gains on a humanoid robot with on-board Jetson AGX Thor.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Embodied AI agents increasingly require parallel execution of multiple tasks, such as manipulation, conversation, and memory construction, from shared observations under distinct time constraints.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">FiberTune: Preserving Action-Fiber Visual Residuals in Vision-Language-Action Fine-Tuning</div>
+<div class="meta-line">Authors: Haihao Lin, Xiangsheng Huang, Xiao Yang, Weibang Zhou, Yiqi Zhang, Bo Yang, Simin Zeng, Jiawei Yang, Zhengyang Wang, Jiahui Du</div>
+<div class="meta-line">Venue: CoRL 2026</div>
+<div class="meta-line">First: 2026-06-07T14:41:22+00:00 · Latest: 2026-10-13T10:38:05+00:00</div>
+<div class="meta-line">Comments: Accepted at CoRL 2026. Project page: https://fibertune.github.io/ Code: https://github.com/fibertune/FiberTune</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2606.08653v4">Abs</a> · <a href="https://arxiv.org/pdf/2606.08653v4">PDF</a> · <a href="https://github.com/fibertune/FiberTune">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a> · <a href="https://fibertune.github.io/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Action-supervised fine-tuning of vision-language-action (VLA) policies can compress visual structure that is weakly constrained by the action objective. We formalize this as residual visual collapse along local action fibers and propose FiberTune, a training-time objective that preserves teacher-structured visual residuals without adding inference-time overhead. FiberTune uses an online action probe to filter action-predictive directions from intermediate visual-token representations. It preserves the residuals through centered directional alignment with a frozen visual teacher and effective-rank regularization. Under identical training conditions, FiberTune improves over task-loss-only fine-tuning in every one of six simulation settings spanning two benchmarks and two architectures ($π_{0.5}$ and OpenVLA-OFT), as well as on physical SO-101 pick-and-place; representative gains include +10.7 pp SR(5) on long-horizon CALVIN ABC$\rightarrow$D and physical SO-101 task success rising from 72.7% to 78.1%. Representation analyses support the preservation of visual information in the residuals.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Action-supervised fine-tuning of vision-language-action (VLA) policies can compress visual structure that is weakly constrained by the action objective.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">SeeTraceAct: Visibility-Aware Latent Planning from Cross-Embodiment Demonstration Videos</div>
+<div class="meta-line">Authors: Jaehyeon Son, Junhyun Kim, Kyle Kam, Jeremiah Coholich, Seok Joon Kim, Jinhoo Kim, Chris Dongjoo Kim, Jaemin Cho, Dieter Fox, Zsolt Kira</div>
+<div class="meta-line">Venue: CoRL 2026</div>
+<div class="meta-line">First: 2026-06-01T18:09:31+00:00 · Latest: 2026-10-13T06:14:01+00:00</div>
+<div class="meta-line">Comments: CoRL 2026</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2606.02745v2">Abs</a> · <a href="https://arxiv.org/pdf/2606.02745v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language-action models (VLAs) are promising general-purpose robot policies, but adapting them to new tasks typically requires costly task-specific teleoperation data. As an alternative, we study one-shot demo-conditioned VLAs, where a robot policy is conditioned on a single demonstration video of an unseen task. We find that existing end-to-end approaches often struggle when successful execution requires precisely localizing small target regions. To address this limitation, we propose SeeTraceAct, a demo-conditioned VLA framework that encourages precise spatial grounding through visibility-aware prediction of future end-effector traces. To enable reproducible evaluation with cross-embodiment demonstrations, we introduce and release RoboCasa-DC, a demo-conditioned extension of RoboCasa that pairs its robot trajectories with newly collected humanoid demonstrations. Experiments on RoboCasa-DC and a real-world benchmark, where a Franka Panda arm is conditioned on human demonstrations, show that SeeTraceAct outperforms baselines, achieving the best success rate across all four RoboCasa-DC settings and improving real-world average success by 9.5 percentage points.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language-action models (VLAs) are promising general-purpose robot policies, but adapting them to new tasks typically requires costly task-specific teleoperation data.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">METIS: Multi-Source Egocentric Training for Integrated Dexterous Vision-Language-Action Model</div>
+<div class="meta-line">Authors: Yankai Fu, Ning Chen, Junkai Zhao, Shaozhe Shan, Guocai Yao, Pengwei Wang, Zhongyuan Wang, Shanghang Zhang</div>
+<div class="meta-line">First: 2025-11-21T16:32:36+00:00 · Latest: 2026-10-13T06:08:20+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2511.17366v2">Abs</a> · <a href="https://arxiv.org/pdf/2511.17366v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Building a generalist robot that can perceive, reason, and act across diverse tasks remains an open challenge, especially for dexterous manipulation. A major bottleneck lies in the scarcity of large-scale, action-annotated data for dexterous skills, as teleoperation is difficult and costly. Human data, with its vast scale and diverse manipulation behaviors, provides rich priors for learning robotic actions. While prior works have explored leveraging human demonstrations, they are often constrained by limited scenarios and a large visual gap between human and robots. To eliminate these limitations, we propose METIS, a vision-language-action (VLA) model for dexterous manipulation pretrained on multi-source egocentric datasets. We first construct EgoAtlas, which integrates large-scale human and robotic data from multiple sources, all unified under a consistent action space. We further extract motion-aware dynamics, a compact and discretized motion representation, which provides efficient and expressive supervision for VLA training. Built upon them, METIS integrates reasoning and acting into a unified framework, enabling effective deployment to downstream dexterous manipulation tasks. Our method demonstrates exceptional dexterous manipulation capabilities, achieving highest average success rate in six real-world tasks. Experimental results also highlight the superior generalization and robustness to out-of-distribution scenarios. These findings emphasize METIS as a promising step toward a generalist model for dexterous manipulation.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Building a generalist robot that can perceive, reason, and act across diverse tasks remains an open challenge, especially for dexterous manipulation.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">HelpMeOut: A Neuropsychology-Grounded Benchmark for Error-Aware Monitoring of Household Task Execution</div>
+<div class="meta-line">Authors: Haoran Wang, Jingwei Huang, Anqing Duan, Ho Seok Ahn, Bruce Macdonald</div>
+<div class="meta-line">Venue: CoRL 2026</div>
+<div class="meta-line">First: 2026-10-13T04:20:13+00:00 · Latest: 2026-10-13T04:20:13+00:00</div>
+<div class="meta-line">Comments: Accepted to the 10th Conference on Robot Learning (CoRL 2026). 30 pages (9-page main text), 8 figures, 18 tables. Project page: https://whrcn.github.io/HelpMeOut-Official/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.17694v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.17694v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://whrcn.github.io/HelpMeOut-Official/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">We introduce HelpMeOut, an embodied AI benchmark for error-aware monitoring of household task execution. Existing embodied household benchmarks typically assume that humans execute tasks correctly, but this assumption does not hold for cognitively impaired persons or older adults whose everyday activities produce structured execution errors. To address this gap, HelpMeOut operationalizes research on everyday action errors into 20000 paired activity episodes, covering nine neuropsychologically motivated error categories. In each episode, agents observe a streaming human activity trajectory and must monitor whether the execution is unfolding correctly, diagnosing any structured errors as early as possible. We evaluate learned-monitor, symbolic, change-point, and frontier LLM prompting baselines. Results show that these methods perform poorly as error monitors, often missing when execution goes wrong. These results suggest a gap left by standard goal-inference and task-completion benchmarks, making HelpMeOut a testbed for error-aware assistive agents.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">We introduce HelpMeOut, an embodied AI benchmark for error-aware monitoring of household task execution.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">ParallelWorld: Test-Time Scaling for Agentic Embodied Reasoning</div>
+<div class="meta-line">Authors: Min Chen, Shengjun Zhang, Yuxin Li, Zhang Zhang, Xin Fei, Chong Xia, Yueqi Duan</div>
+<div class="meta-line">First: 2026-08-24T08:32:37+00:00 · Latest: 2026-10-13T02:37:47+00:00</div>
+<div class="meta-line">Comments: Project Page: https://agenticei.github.io/ParallelWorld-page/ Code: https://github.com/AgenticEI/ParallelWorld</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2608.22971v2">Abs</a> · <a href="https://arxiv.org/pdf/2608.22971v2">PDF</a> · <a href="https://github.com/AgenticEI/ParallelWorld">Code1</a> · <a href="https://huggingface.co/huggingface">Code2</a> · <a href="https://huggingface.co/docs/hub/spaces">Code3</a> · <a href="https://agenticei.github.io/ParallelWorld-page/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Embodied AI has emerged as a key paradigm for autonomous systems operating in complex physical environments. While end-to-end models have established strong local capabilities for perception and control, scaling these capabilities to extended, multi-stage tasks remains difficult. Agentic embodied systems address this challenge by introducing high-level planners that organize perception, reasoning, and executable skills over longer interaction horizons. However, existing agentic embodied frameworks typically generate actions for direct execution without explicitly simulating how alternative action sequences shape future observations and task progress, leading agents to commit to suboptimal interactions before considering their long-term consequences. To address this limitation, we propose ParallelWorld, an adaptive-horizon test-time scaling framework that grounds agentic embodied reasoning in the prospective simulation of action outcomes. Specifically, we design an agent system to simulate and evaluate alternative trajectories in parallel before committing to an action. A verifier assesses intermediate state transitions with respect to the task objective, dynamically pruning unpromising branches and guiding subsequent expansion. Based on the evaluated long-horizon outcomes, the agent selects a trajectory, executes only its first action, and replans as new observations become available. Experiments on ESI-Bench and LIBERO-Pro demonstrate improvements in active spatial reasoning and language-conditioned manipulation, respectively, highlighting the effectiveness of prospective planning for both understanding and manipulation tasks.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Embodied AI has emerged as a key paradigm for autonomous systems operating in complex physical environments.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">WARP-VLA: Wrist-Camera Adaptation for View-Robust Policy Execution in Vision-Language-Action Models</div>
+<div class="meta-line">Authors: Junmyeong Lee, Dongmin Shin, Min-Gyu Park, Wooseok Jeon, Inho Chang, Hae-Gon Jeon</div>
+<div class="meta-line">First: 2026-10-08T08:44:26+00:00 · Latest: 2026-10-13T02:24:43+00:00</div>
+<div class="meta-line">Comments: 9 pages, 6 figures</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.11508v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.11508v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Despite recent advances in Vision-Language-Action models (VLAs) for robotic manipulation, their performance remains sensitive to changes in camera configuration. The problem becomes more evident in cross-setup deployment, as reproducing the exact camera pose used for training is nearly impossible. Unlike fixed external views, wrist views are more challenging because the camera moves with the robot, causing even small mounting variations to alter fine-grained geometric cues. To address this, we propose WARP-VLA, a camera-view robust VLA for diverse wrist camera configurations. WARP-VLA adopts a Mixture-of-Experts (MoE) architecture where individual experts learn view-specific feature transformations, and a router combines them based on implicit view information. This allows the policy to be deployed without requiring camera extrinsic parameters as additional input. Through experiments on the LIBERO benchmark, WARP-VLA improves the average success rate of pi-0.5 from 39.2% to 78.3% under wrist-view perturbations. The real-robot experiments further show that the feature-level adaptation learned in simulation successfully transfers to diverse deployment settings. To facilitate reproducibility and future research, we release our wrist viewpoint robustness benchmark and a plug-and-play implementation.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Despite recent advances in Vision-Language-Action models (VLAs) for robotic manipulation, their performance remains sensitive to changes in camera configuration.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">NeuroVLA: A Brain-inspired Embodied Intelligence for Fluid and Fast Reflexive Robotics Control</div>
+<div class="meta-line">Authors: Weiyu Guo, He Zhang, Pengteng Li, Tiefu Cai, Ziyang Chen, Yandong Guo, Xiao He, Yongkui Yang, Ying Sun, Hui Xiong</div>
+<div class="meta-line">First: 2026-01-21T04:04:44+00:00 · Latest: 2026-10-13T01:40:33+00:00</div>
+<div class="meta-line">Comments: 14 pages, 8 figures. Added NeuroVLA to the title; clarified language-model design inertia, high-frequency proprioception, motor memory and local feedback; revised biological analogies; corrected figure captions and references. Experimental figures and main quantitative results are unchanged</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2601.14628v2">Abs</a> · <a href="https://arxiv.org/pdf/2601.14628v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language-action (VLA) models inherit powerful semantic representations from large language models, but carrying over their design priorities can leave the demands of physical control under-specified. Stable manipulation requires high-frequency proprioceptive feedback and persistent motor state, in addition to instruction understanding. Here we introduce Neuromorphic Vision-Language-Action (NeuroVLA), a brain-inspired architecture that couples a cortical vision-language planner to recurrent cerebellar modulation and a stateful spiking spinal controller. These components translate semantic intent into actions while incorporating high-frequency proprioceptive and force feedback, maintaining short-term motor memory, and enabling local responses to unexpected contact. In simulated and physical manipulation tasks, the cerebellar module reduces mean commanded jerk by 75.6%, and NeuroVLA achieves a 54.8% collision-recovery rate compared with 0.0% for the evaluated VLA baselines. The spinal controller implemented on an FPGA-based neuromorphic processor achieves 2.19 ms inference latency and 0.87 mJ per inference, corresponding to approximately 0.4 W during inference. These results motivate moving beyond inherited language-model design priorities toward embodied architectures that explicitly integrate semantic planning, high-frequency bodily feedback, motor memory, and local correction.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language-action (VLA) models inherit powerful semantic representations from large language models, but carrying over their design priorities can leave the demands of physical control under-specified.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">TacitVLA: Reasoning Vision-Language-Action Models Without Reasoning Latency</div>
+<div class="meta-line">Authors: Jack Lu, Yurong You, Boyi Li, Yulong Cao, Thomas Tian, Chaowei Xiao, Xiangyu Chen, Wenjie Luo, Boris Ivanovic, Marco Pavone, Yan Wang</div>
+<div class="meta-line">First: 2026-10-13T01:09:25+00:00 · Latest: 2026-10-13T01:09:25+00:00</div>
+<div class="meta-line">Comments: Project page: https://tacitvla.github.io</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.17540v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.17540v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://tacitvla.github.io">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Textual reasoning before acting has improved vision-language-action (VLA) models, but at the cost of latency: every action conditioned on the reasoning text must wait for autoregressive decoding. We show that actions do not need to wait for or condition on the generated reasoning to benefit from it, because the reasoning supervision already improves the backbone representation. We introduce TacitVLA, a reasoning VLA whose action expert never attends to the reasoning it generates for the current call. On long-horizon tasks where the reasoning text also serves as episodic memory, it can generate each entry during action execution rather than before acting. We evaluate it in a controlled study on four benchmarks spanning manipulation and autonomous driving, memory and non-memory tasks: RoboMME, RMBench, LIBERO, and PhysicalAI-AV. On all four, TacitVLA matches the performance of its explicit-reasoning counterpart at up to 3.4x lower latency, and matches the latency of the same architecture trained without reasoning at up to +17.1% success. In absolute terms, it surpasses the best previously published results on the RoboMME Counting suite (82.7% vs. 66.8%) and RMBench (77.5% vs. 56.5%), and reaches 72.9% on LIBERO-Plus and a 52.5% scene score on the public split of the PhysicalAI-AV closed-loop driving challenge. Project page: https://tacitvla.github.io.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Textual reasoning before acting has improved vision-language-action (VLA) models, but at the cost of latency: every action conditioned on the reasoning text must wait for autoregressive decoding.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">YUBI-Real2Sim: 3DGS Scene Verification for Reliable Policy Evaluation</div>
+<div class="meta-line">Authors: Hiroki Nishizawa, Takehiko Ohkawa, Nicola Scianca, Tatsuya Matsushima, Shigeo Morishima, Kei Ota</div>
+<div class="meta-line">First: 2026-10-13T00:33:21+00:00 · Latest: 2026-10-13T00:33:21+00:00</div>
+<div class="meta-line">Comments: Under submission</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.17521v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.17521v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://yubi-real2sim.airoa.io">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Evaluating VLA policies on real robots is costly, time-consuming, and difficult to reproduce, making real-to-sim simulation essential for scalable evaluation. While 3D Gaussian Splatting (3DGS) enables rapid real-to-sim scene generation, the reconstruction quality required for reliable policy evaluation remains unquantified. In particular, policies relying on wrist-mounted fisheye cameras (e.g., YUBI handheld gripper data) are heavily exposed to visual artifacts (holes, floaters) in wide-angle views, directly degrading task performance. To address this, we present YUBI-Real2Sim, a unified framework for 3DGS-based scene reconstruction and real-to-sim policy evaluation under dual fisheye wrist views. We develop an integrated pipeline combining 200-degree fisheye camera capture, 3DGS training, 3D foundation models for object modeling, and MuJoCo-based physical simulation, reproducing the observed real-world policy ordering in eight of nine scene-task comparisons. Using this framework, we construct a benchmark across two bimanual robot platforms, three scenes, three tasks, and dual pi0.5-based policies. This systematically measures real-to-sim rank agreement and evaluates policy sensitivity against counterfactual 3DGS artifacts (ceiling holes, floaters, warping) and capture disturbances. We further analyze whether novel-view quality scores can indicate policy-ranking reliability under a scene-held-out evaluation protocol. The results show task-dependent performance and limitations of quality-based reliability prediction, highlighting the need to assess reconstruction quality when using Real2Sim for policy evaluation. These results do not yet establish a generally reliable scene-acceptance rule. Project Page: https://yubi-real2sim.airoa.io.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Evaluating VLA policies on real robots is costly, time-consuming, and difficult to reproduce, making real-to-sim simulation essential for scalable evaluation.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Towards Long-horizon Embodied Agents with Tool-Aligned Vision-Language-Action Models</div>
+<div class="meta-line">Authors: Zixing Lei, Changxing Liu, Yichen Xiong, Minhao Xiong, Yuanzhuo Ding, Zhipeng Zhang, Weixin Li, Siheng Chen</div>
+<div class="meta-line">First: 2026-05-13T07:40:34+00:00 · Latest: 2026-10-12T18:03:31+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2605.13119v2">Abs</a> · <a href="https://arxiv.org/pdf/2605.13119v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language-action (VLA) models are effective robot action executors, but they remain limited on long-horizon tasks due to the dual burden of extended closed-loop planning and diverse physical operations. We therefore propose VLAs-as-Tools, a strategy that distributes this burden across a high-level vision language model (VLM) agent for temporal reasoning and a family of specialized VLA tools for diverse local physical operations. The VLM handles scene analysis, global planning, and recovery, while each VLA tool executes a bounded subtask. To tightly couple agent planning with VLA tool execution in long-horizon tasks, we introduce a VLA tool-family interface that exposes explicit tool selection and in-execution progress feedback, enabling efficient event-triggered agent replanning without continuous agent polling. To obtain diverse specialized VLA tools that faithfully follow agent invocations, we further propose Tool-Aligned Post-Training (TAPT), which constructs invocation-aligned training units for instruction following and adopts tool-family residual adapters for efficient tool specialization. Across five simulated benchmarks, VLAs-as-Tools improves the success rate of pi05 by 8.9 percentage points on average and enhances invocation fidelity by 15.0 points in Non-biased Rate. On three real-world Franka tasks, it improves success rate from 16.7% to 58.3% under matched data and compute. Code will be released.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language-action (VLA) models are effective robot action executors, but they remain limited on long-horizon tasks due to the dual burden of extended closed-loop planning and diverse physical operations.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">AUGUstus: Autonomous Driving VLA Model with Unified Generation and Understanding</div>
+<div class="meta-line">Authors: Yuqi Ye, Caigao Jiang, Zhuonan Wang, Congyuan Pei, Chao Qu, Changhao Peng, Junhong Lin, Qize Yu, Zetian Song, Guangzhao Fu, Chongruo Wu, Shiyu Huang, Shuchang Zhou, Honggou Yang, Wei Gao</div>
+<div class="meta-line">First: 2026-10-12T15:42:09+00:00 · Latest: 2026-10-12T15:42:09+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16985v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16985v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://augustus-ad.github.io">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-language-action (VLA) models show strong potential for end-to-end autonomous driving by leveraging world knowledge and understanding to excel in long-tail scenarios. However, current VLAs have two limitations: 1) Degeneration into vision-action (VA) models. For low latency, regression/flow-based methods directly generate actions but underuse VLM understanding, causing unsafe, unexplainable actions. 2) Autoregressive high latency. Autoregressive methods sequentially generate chain-of-thought (CoT) and action tokens, fully leveraging VLM understanding, but high latency hinders deployment. To enable low-latency deployment while using CoT to assist action generation, we propose AUGUstus, an Autonomous-driving VLA model with Unified Generation and Understanding. We unify diffusion-based action generation and autoregressive CoT understanding in one model, where understanding only serves generation. Joint CoT supervision preserves VLM spatial understanding in shared representation for safer, more accurate trajectories. AUGUstus-mode orders action generation before CoT, so CoT supervises reliable actions during training while inference needs only action output, enabling low latency. AUGUstus-GRPO, a unified GRPO algorithm, jointly optimizes action and CoT, improving action performance. Experiments show AUGUstus achieves 94.6 PDMS on NAVSIMv1 and 90.7 EPDMS on NAVSIMv2, SOTA planning without scorer module. On nuScenes, it achieves average L2 error 0.27 m and average collision rate 0.05%, best among compared methods. To validate AUGUstus practicality, we train on in-house data with 512 NVIDIA H800 GPUs for ~2 days, evaluate on an internal 1,000 km dataset, and preliminarily deploy on a real vehicle, achieving 12 Hz operation. Project page: https://augustus-ad.github.io</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-language-action (VLA) models show strong potential for end-to-end autonomous driving by leveraging world knowledge and understanding to excel in long-tail scenarios.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">UniLAP: A Unified Latent Action Policy for Cross-Embodiment Manipulation</div>
+<div class="meta-line">Authors: Lei Yao, Qiao Feng, Mutian Tong, Qihao Yun, Lap-Pui Chau, Lingjie Liu</div>
+<div class="meta-line">First: 2026-10-12T15:33:56+00:00 · Latest: 2026-10-12T15:33:56+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16969v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16969v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Latent Action Models (LAMs) can capture manipulation priors from action-free videos, but discrete latents usually impose a granularity bottleneck, limiting their ability to represent fine-grained action. Recent continuous alternatives mitigate this, but they are typically used as proxies for world modeling and require a further planning step to produce executable actions. We thus introduce UniLAP, a unified continuous latent-action policy that models the latent space via flow matching and bypasses reliance on future frames during inference. By distilling a LAM teacher with a flow-adaptive objective, UniLAP inherits the teacher&#x27;s action representation while retaining the multimodal distribution of feasible behaviors. To decouple latent representations from task-irrelevant appearance, we extract a label-free motion target to isolate relevant kinematic cues from spurious visual dynamics. With the established embodiment-agnostic latent manifold, UniLAP can be easily adapted to novel platforms. Pretrained on multi-source videos at a compact 1.1B parameter scale, UniLAP outperforms state-of-the-art latent-action and Vision-Language-Action (VLA) baselines across hand pose forecasting, single-arm and humanoid manipulation, and real-world deployment.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Latent Action Models (LAMs) can capture manipulation priors from action-free videos, but discrete latents usually impose a granularity bottleneck, limiting their ability to represent fine-grained action.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">AnolisVLA: Lightweight Vision-Language-Action Model with Deep State Space Models for Mobile Manipulation</div>
+<div class="meta-line">Authors: Yusuke Takagi, Motonari Kambara, Daichi Yashima, Koki Seno, Kento Tokura, Komei Sugiura</div>
+<div class="meta-line">First: 2026-03-16T09:57:45+00:00 · Latest: 2026-10-12T14:11:09+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2603.15046v2">Abs</a> · <a href="https://arxiv.org/pdf/2603.15046v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">In this study, we address the problem of language-guided robotic manipulation, where a robot is required to manipulate a wide range of objects based on visual observations and natural language instructions. This task is essential for service robots that operate in human environments, and requires safety, efficiency, and task-level generality. Although Vision-Language-Action models (VLAs) have demonstrated strong performance for this task, their deployment in resource-constrained environments remains challenging because of the computational cost of standard transformer backbones. To overcome this limitation, we propose AnolisVLA, a lightweight VLA that uses a deep state space model to process multimodal sequences efficiently. The model uses lightweight, fast sequential state modeling to process visual and textual inputs. This design enables efficient trajectory generation. We evaluated the proposed method in simulation and on two real robot platforms. Compared with SmolVLA at a comparable parameter scale, AnolisVLA achieved higher task success rates, faster inference, and comparable GPU memory usage. In mobile manipulation, it outperformed the larger, 3-billion-parameter $π_{0.5}$ model by 21 percentage points in task success rate while achieving approximately three times faster inference.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">In this study, we address the problem of language-guided robotic manipulation, where a robot is required to manipulate a wide range of objects based on visual observations and natural language instructions.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">LIBERO-Industry: Benchmarking Robotic Manipulation under Industrial Process Constraints</div>
+<div class="meta-line">Authors: Ming Shin Cindy Sung, Duan Leijiahao, Haoxiang Wang, Boning Tan, Liangna Fu, Chao Tan, Yafu Li, Yulong Chen, Chaoqun Wan, Zhen Huang, Shuxian Liang, Xian-Sheng Hua</div>
+<div class="meta-line">First: 2026-10-12T13:38:46+00:00 · Latest: 2026-10-12T13:38:46+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16782v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16782v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Industrial manipulation in flexible manufacturing, e.g., high-mix, low-volume (HMLV) electronics assembly, requires robot policies to adapt to changing products and production conditions. Such settings impose industrial process constraints, including product variants, moving material flows, finite execution windows, and tight geometric tolerances. However, existing evaluation frameworks do not systematically capture these constraints when assessing generalist robot policies. To address this gap, we introduce LIBERO-Industry, a novel benchmark built on the widely used robot learning benchmark LIBERO, that translates the aforementioned industrial constraints into controllable task conditions and measurable success criteria. Specifically, LIBERO-Industry comprises three classic task scenarios: Static-to-Dynamic (S2D) loading, Dynamic-to-Static (D2S) unloading, and Dynamic-to-Dynamic (D2D) transfer. The suites contain 216 tasks in total that systematically vary object geometry, conveyor speed, interaction-window duration, and geometric acceptance region size. Extensive experiments across five generalist robot policies (including vision-language-action models and world-action models) show that performance progressively degrades as industrial constraints are introduced and combined. Under a shared fine-tuning and evaluation protocol, the LIBERO-Industry co-training condition achieved higher observed target-transfer completion than the original-LIBERO condition.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Industrial manipulation in flexible manufacturing, e.g., high-mix, low-volume (HMLV) electronics assembly, requires robot policies to adapt to changing products and production conditions.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Language2Drive: Do Vision-Language-Action Models Really Follow the Instructions in Autonomous Driving?</div>
+<div class="meta-line">Authors: Zihan You, Zehua Fan, Wenqi Lyu, Aoqi Wang, Ni Wang, Yifei Yang, Linge Zhao, Huan Li, Sining Ang, Yuguang Yang, Jueyu Chen, Xiangyu Li, Qianshan Wei, Jieyuan Pei, Yuxin Wang, Zhiwen Chen, Jiaqi Li, Wenxuan Song, Yanyuan Qiao, Benjin Zhu, Haoang Li, Yan Wang</div>
+<div class="meta-line">First: 2026-10-12T11:54:56+00:00 · Latest: 2026-10-12T11:54:56+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16634v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16634v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Recent Vision-Language-Action (VLA) models increasingly use natural-language instructions to condition autonomous driving behavior. Yet existing closed-loop benchmarks primarily measure route completion, safety, and rule compliance, leaving a fundamental question unresolved: does language actually determine which feasible behavior the vehicle executes? A trajectory may be safe and successful while still violating or even ignoring the passenger&#x27;s instruction. To address this, we introduce \ltd, a benchmark designed to directly test this capability. Its key evaluation unit, the paired counterfactual unit (PCU), holds the initial driving scene fixed while changing only the instruction. This design enables us to distinguish isolated instruction success from counterfactual paired success across four instruction-following scopes. To test whether this distinction persists across evaluation regimes, we instantiate Language2Drive in complementary closed-loop CARLA simulation, reconstructed real-world scenes, and open-loop driving benchmarks, including our released CARLA-Language2Drive simulator with purpose-built maps. Evaluating representative driving VLAs across these settings reveals a striking mismatch between strong driving competence and weak language control: 93.2% of successful rollouts do not have a successful counterpart under the alternative feasible instruction. This failure is dominated by one-sided completion, where a model repeatedly executes one preferred behavior but fails when the same scene requires the counterfactual alternative. These results expose two fundamental limitations of current evaluation: isolated success and driving scores, which are widely used by conventional driving benchmarks, can substantially overstate language-following capability, while current driving VLAs themselves lack reliable instruction following under matched counterfactual tests.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Recent Vision-Language-Action (VLA) models increasingly use natural-language instructions to condition autonomous driving behavior.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">VLA-GAUGE: Systematically Evaluating Generalization and Robustness in Vision-Language-Action Models</div>
+<div class="meta-line">Authors: Jun Xiao, Rui Ye, Dong Cao, Jinyu Gu, Ying Wang, Zhiliang Zhu</div>
+<div class="meta-line">First: 2026-10-12T10:48:12+00:00 · Latest: 2026-10-12T10:48:12+00:00</div>
+<div class="meta-line">Comments: 18 pages, 8 figures, 4 tables</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16567v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16567v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-Language-Action models (VLAs) have achieved high success rates on familiar manipulation tasks, yet it remains unclear whether such scores reflect genuine zero-shot generalization and perturbation robustness. Existing evaluation frameworks provide limited capability-level diagnosis and combinatorial perturbation coverage, often without connecting diagnosis to targeted model refinement. We introduce VLA-GAUGE, a diagnostic framework that unifies both evaluations under a shared executable task representation. It combines (1) paired in-distribution and out-of-distribution tasks across six capability suites, (2) single-factor sensitivity analysis with combinatorial perturbation screening and evaluation, and (3) diagnosis-driven refinement through targeted data augmentation and model fine-tuning. We evaluate 12 VLAs spanning different model sizes and action-modeling paradigms under a unified protocol. We find that (1) The mean Zero-Shot Score on VLA-GAUGE is only 22.3%, with SimpleVLA-RL scoring 8.0% and ranking second to last among the evaluated models. (2) Under three representative combinatorial perturbation configurations, the mean R-Score is 9.3. (3) Diagnosis-driven fine-tuning improves $π_{0.5}$&#x27;s zero-shot generalization and robustness under a selected perturbation combination on held-out scenarios by 72.4 and 31.8 scoring points, respectively; the latter exceeds the 10.9-point gain from LIBERO-Plus single-factor fine-tuning despite fewer successful training trajectories. These results show that high reported success rates on familiar manipulation tasks do not guarantee strong zero-shot generalization to unseen tasks or robustness to combinatorial perturbations, while diagnostic evaluation provides actionable signals for targeted model improvement.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-Language-Action models (VLAs) have achieved high success rates on familiar manipulation tasks, yet it remains unclear whether such scores reflect genuine zero-shot generalization and perturbation robustness.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">Trust-Calibrated VLA Policy Post-Training with Evolving Imagination</div>
+<div class="meta-line">Authors: Wenzhan Li, Yiran Qin, Heng Zhou, Huirui Wang, Yulan Guo, Ruimao Zhang</div>
+<div class="meta-line">First: 2026-10-12T10:08:28+00:00 · Latest: 2026-10-12T10:08:28+00:00</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.16517v1">Abs</a> · <a href="https://arxiv.org/pdf/2610.16517v1">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Vision-Language-Action (VLA) models are often pretrained via imitation learning, making reinforcement learning (RL) post-training important when deployment moves beyond demonstration coverage. Existing refinement paradigms expose a reliability--efficiency tension: model-free refinement avoids simulator bias but is interaction-intensive, whereas model-based refinement can exploit unreliable imagination even as its simulator adapts. We propose Model-Evolving Reinforcement Learning (MERL), a trust-calibrated framework that couples policy optimization with an online-updated simulator comprising a world model and a reward proxy head. Across stages, simulator reliability controls the imagined-data ratio and rollout horizon; within rollouts, chunk-level trust controls replay selection and optimization weight. For recursive imagination without exact grounded continuations, a residual predictor estimates trust without querying future ground truth. On perturbed LIBERO-PRO tasks, MERL reaches 79.7% average success, improves high-threshold learning speed by 10.9% over the matched model-free control, and outperforms same-protocol external baselines across three training seeds. Fixed-data adaptation from 50 demonstrations per task achieves 80.0% average success on two physical-robot tasks.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Vision-Language-Action (VLA) models are often pretrained via imitation learning, making reinforcement learning (RL) post-training important when deployment moves beyond demonstration coverage.</div>
+</details>
+</div>
+<div class="card">
+<div class="title">NavGPT-3: Harnessing Context in a Hierarchical Navigation Runtime</div>
+<div class="meta-line">Authors: Gengze Zhou, Yicong Hong, Jiazhao Zhang, Xunyi Zhao, Jian Zhou, Zixing Lei, Zun Wang, Chongyang Zhao, Xionghui Chen, Stephen Gould, Anton van den Hengel, Qi Wu</div>
+<div class="meta-line">First: 2026-10-07T18:45:56+00:00 · Latest: 2026-10-12T08:50:46+00:00</div>
+<div class="meta-line">Comments: 36 pages, 14 figures. Project page: https://metacognitionai.github.io/NavGPT3/</div>
+<div class="links" style="margin-top:8px"><a href="https://arxiv.org/abs/2610.10787v2">Abs</a> · <a href="https://arxiv.org/pdf/2610.10787v2">PDF</a> · <a href="https://huggingface.co/huggingface">Code1</a> · <a href="https://huggingface.co/docs/hub/spaces">Code2</a> · <a href="https://metacognitionai.github.io/NavGPT3/">Project1</a></div>
+<details class="detail"><summary>Abstract</summary>
+<div class="mono">Language models trained with long-horizon agentic reinforcement learning can generalize knowledge through reasoning, express precise actions, and pursue goals over many steps, raising the ceiling on what an embodied agent can understand and decide. Physical interaction, however, remains the domain of action policies, which provide dense, low-latency control. We present NavGPT-3, a harness that connects the two models, with an OS-like runtime built above it: reasoning, acting, and monitoring run as threads with their own context, tools, and permissions, while the runtime schedules them and decides which thread controls the robot&#x27;s motion, so that the robot can react to sudden real-world events through interruption and thread switching. Beneath it, our action policy NavGPT VLA, trained on 19.28M examples, allocates visual tokens using codec allocation, in proportion to scene change; its 8B model alone reaches 76.94 SR on R2R-CE and leads RxR-CE with 82.39 SR. With the complete harness, NavGPT-3 sets the state of the art on R2R-CE (81.51 SR) and, for the first time, brings an autonomous agent to human level: on RxR-CE it matches human followers in success (90.43 vs. 90.4 SR) and path fidelity (78.47 vs. 77.7 nDTW) at 1 min 22 s per episode, versus roughly 3 min for a human. We comprehensively ablate the harness design and the interaction between the two models, showing how tools and the action policy shape the path from language-model reasoning to physical control: when NavGPT VLA executes the route, the reasoning loop shortens and the system&#x27;s minimum reaction time falls from 3-19 s per language-model decision to 0.5-1 s per action-policy step (1-2 Hz). These results show that designing this embodied interface is central to connecting frontier language-model intelligence with low-level physical control. We will release all models, code, and evaluation records.</div></details>
+<details class="detail"><summary>Summary / 总结</summary>
+<div class="mono">Language models trained with long-horizon agentic reinforcement learning can generalize knowledge through reasoning, express precise actions, and pursue goals over many steps, raising the ceiling on what an embodied agent can understand and decide.</div>
+</details>
+</div></div>
+    <details style="margin-top:16px" class="detail"><summary>History</summary>
+      <div class="history-list"><a href="archive/20261014_0714.html">20261014_0714</a>
+<a href="archive/20261013_0911.html">20261013_0911</a>
+<a href="archive/20261012_0645.html">20261012_0645</a>
+<a href="archive/20261011_0622.html">20261011_0622</a>
+<a href="archive/20261010_0707.html">20261010_0707</a>
+<a href="archive/20261009_0742.html">20261009_0742</a>
+<a href="archive/20261008_0732.html">20261008_0732</a>
+<a href="archive/20261007_0657.html">20261007_0657</a>
+<a href="archive/20261006_0842.html">20261006_0842</a>
+<a href="archive/20261005_0616.html">20261005_0616</a>
+<a href="archive/20261004_0604.html">20261004_0604</a>
+<a href="archive/20261003_0655.html">20261003_0655</a>
+<a href="archive/20261002_0703.html">20261002_0703</a>
+<a href="archive/20261001_0654.html">20261001_0654</a>
+<a href="archive/20260930_0654.html">20260930_0654</a>
+<a href="archive/20260929_0747.html">20260929_0747</a>
+<a href="archive/20260928_0557.html">20260928_0557</a>
+<a href="archive/20260927_0555.html">20260927_0555</a>
+<a href="archive/20260926_0608.html">20260926_0608</a>
+<a href="archive/20260925_0610.html">20260925_0610</a>
+<a href="archive/20260924_0609.html">20260924_0609</a>
+<a href="archive/20260923_0555.html">20260923_0555</a>
+<a href="archive/20260922_0632.html">20260922_0632</a>
+<a href="archive/20260921_0522.html">20260921_0522</a>
+<a href="archive/20260920_0523.html">20260920_0523</a>
+<a href="archive/20260919_0533.html">20260919_0533</a>
+<a href="archive/20260918_0601.html">20260918_0601</a>
+<a href="archive/20260917_0600.html">20260917_0600</a>
+<a href="archive/20260916_0602.html">20260916_0602</a>
+<a href="archive/20260915_0625.html">20260915_0625</a>
+<a href="archive/20260913_0520.html">20260913_0520</a>
+<a href="archive/20260912_0537.html">20260912_0537</a>
+<a href="archive/20260911_0530.html">20260911_0530</a>
+<a href="archive/20260910_0534.html">20260910_0534</a>
+<a href="archive/20260909_0544.html">20260909_0544</a>
+<a href="archive/20260908_0556.html">20260908_0556</a>
+<a href="archive/20260907_0510.html">20260907_0510</a>
+<a href="archive/20260906_0503.html">20260906_0503</a>
+<a href="archive/20260905_0519.html">20260905_0519</a>
+<a href="archive/20260904_0536.html">20260904_0536</a>
+<a href="archive/20260903_0540.html">20260903_0540</a>
+<a href="archive/20260902_0540.html">20260902_0540</a>
+<a href="archive/20260901_0710.html">20260901_0710</a>
+<a href="archive/20260831_0553.html">20260831_0553</a>
+<a href="archive/20260830_0535.html">20260830_0535</a>
+<a href="archive/20260829_1002.html">20260829_1002</a>
+<a href="archive/20260828_1131.html">20260828_1131</a>
+<a href="archive/20260827_0544.html">20260827_0544</a>
+<a href="archive/20260826_0336.html">20260826_0336</a>
+<a href="archive/20260825_0334.html">20260825_0334</a>
+<a href="archive/20260824_0326.html">20260824_0326</a>
+<a href="archive/20260823_0326.html">20260823_0326</a>
+<a href="archive/20260822_0329.html">20260822_0329</a>
+<a href="archive/20260821_0336.html">20260821_0336</a>
+<a href="archive/20260819_0331.html">20260819_0331</a>
+<a href="archive/20260818_0332.html">20260818_0332</a>
+<a href="archive/20260817_0325.html">20260817_0325</a>
+<a href="archive/20260816_0326.html">20260816_0326</a>
+<a href="archive/20260815_0355.html">20260815_0355</a>
+<a href="archive/20260814_0358.html">20260814_0358</a>
+<a href="archive/20260813_0402.html">20260813_0402</a>
+<a href="archive/20260812_0403.html">20260812_0403</a>
+<a href="archive/20260811_0356.html">20260811_0356</a>
+<a href="archive/20260810_0338.html">20260810_0338</a>
+<a href="archive/20260809_0335.html">20260809_0335</a>
+<a href="archive/20260808_0354.html">20260808_0354</a>
+<a href="archive/20260807_0843.html">20260807_0843</a>
+<a href="archive/20260806_0435.html">20260806_0435</a>
+<a href="archive/20260805_0437.html">20260805_0437</a>
+<a href="archive/20260804_0436.html">20260804_0436</a>
+<a href="archive/20260803_0413.html">20260803_0413</a>
+<a href="archive/20260802_0412.html">20260802_0412</a>
+<a href="archive/20260801_0423.html">20260801_0423</a>
+<a href="archive/20260731_0419.html">20260731_0419</a>
+<a href="archive/20260730_0415.html">20260730_0415</a>
+<a href="archive/20260729_0421.html">20260729_0421</a>
+<a href="archive/20260728_0426.html">20260728_0426</a>
+<a href="archive/20260727_0414.html">20260727_0414</a>
+<a href="archive/20260726_0413.html">20260726_0413</a>
+<a href="archive/20260725_0424.html">20260725_0424</a>
+<a href="archive/20260724_0417.html">20260724_0417</a>
+<a href="archive/20260723_0414.html">20260723_0414</a>
+<a href="archive/20260722_0421.html">20260722_0421</a>
+<a href="archive/20260721_0426.html">20260721_0426</a>
+<a href="archive/20260720_0409.html">20260720_0409</a>
+<a href="archive/20260719_0406.html">20260719_0406</a>
+<a href="archive/20260718_0410.html">20260718_0410</a>
+<a href="archive/20260717_0405.html">20260717_0405</a>
+<a href="archive/20260716_0415.html">20260716_0415</a>
+<a href="archive/20260715_0417.html">20260715_0417</a>
+<a href="archive/20260714_0420.html">20260714_0420</a>
+<a href="archive/20260713_0409.html">20260713_0409</a>
+<a href="archive/20260712_0408.html">20260712_0408</a>
+<a href="archive/20260711_0428.html">20260711_0428</a>
+<a href="archive/20260710_0451.html">20260710_0451</a>
+<a href="archive/20260709_0424.html">20260709_0424</a>
+<a href="archive/20260707_0455.html">20260707_0455</a>
+<a href="archive/20260706_0419.html">20260706_0419</a>
+<a href="archive/20260705_0412.html">20260705_0412</a>
+<a href="archive/20260704_0419.html">20260704_0419</a>
+<a href="archive/20260703_0423.html">20260703_0423</a>
+<a href="archive/20260702_0450.html">20260702_0450</a>
+<a href="archive/20260701_0500.html">20260701_0500</a>
+<a href="archive/20260630_0451.html">20260630_0451</a>
+<a href="archive/20260629_0417.html">20260629_0417</a>
+<a href="archive/20260627_0449.html">20260627_0449</a>
+<a href="archive/20260626_0501.html">20260626_0501</a>
+<a href="archive/20260625_0450.html">20260625_0450</a>
+<a href="archive/20260624_0503.html">20260624_0503</a>
+<a href="archive/20260623_0534.html">20260623_0534</a>
+<a href="archive/20260622_0427.html">20260622_0427</a>
+<a href="archive/20260621_0419.html">20260621_0419</a>
+<a href="archive/20260620_0428.html">20260620_0428</a>
+<a href="archive/20260619_0524.html">20260619_0524</a>
+<a href="archive/20260618_0516.html">20260618_0516</a>
+<a href="archive/20260617_0544.html">20260617_0544</a>
+<a href="archive/20260616_0547.html">20260616_0547</a>
+<a href="archive/20260615_0422.html">20260615_0422</a>
+<a href="archive/20260614_0420.html">20260614_0420</a>
+<a href="archive/20260613_0504.html">20260613_0504</a>
+<a href="archive/20260612_0526.html">20260612_0526</a>
+<a href="archive/20260611_0526.html">20260611_0526</a>
+<a href="archive/20260610_0503.html">20260610_0503</a>
+<a href="archive/20260609_0513.html">20260609_0513</a>
+<a href="archive/20260608_0417.html">20260608_0417</a>
+<a href="archive/20260607_0414.html">20260607_0414</a>
+<a href="archive/20260606_0451.html">20260606_0451</a>
+<a href="archive/20260605_0503.html">20260605_0503</a>
+<a href="archive/20260604_0555.html">20260604_0555</a>
+<a href="archive/20260603_0553.html">20260603_0553</a>
+<a href="archive/20260602_0613.html">20260602_0613</a>
+<a href="archive/20260601_0415.html">20260601_0415</a>
+<a href="archive/20260531_0411.html">20260531_0411</a>
+<a href="archive/20260530_0510.html">20260530_0510</a>
+<a href="archive/20260529_0514.html">20260529_0514</a>
+<a href="archive/20260528_0505.html">20260528_0505</a>
+<a href="archive/20260527_0457.html">20260527_0457</a>
+<a href="archive/20260526_0425.html">20260526_0425</a>
+<a href="archive/20260525_0416.html">20260525_0416</a>
+<a href="archive/20260524_0409.html">20260524_0409</a>
+<a href="archive/20260523_0445.html">20260523_0445</a>
+<a href="archive/20260522_0453.html">20260522_0453</a>
+<a href="archive/20260521_0505.html">20260521_0505</a>
+<a href="archive/20260520_0448.html">20260520_0448</a>
+<a href="archive/20260519_0428.html">20260519_0428</a>
+<a href="archive/20260518_0406.html">20260518_0406</a>
+<a href="archive/20260517_0410.html">20260517_0410</a>
+<a href="archive/20260516_0418.html">20260516_0418</a>
+<a href="archive/20260515_0439.html">20260515_0439</a>
+<a href="archive/20260514_0448.html">20260514_0448</a>
+<a href="archive/20260513_0444.html">20260513_0444</a>
+<a href="archive/20260512_0450.html">20260512_0450</a>
+<a href="archive/20260511_0401.html">20260511_0401</a>
+<a href="archive/20260510_0359.html">20260510_0359</a>
+<a href="archive/20260509_0410.html">20260509_0410</a>
+<a href="archive/20260508_0422.html">20260508_0422</a>
+<a href="archive/20260507_0428.html">20260507_0428</a>
+<a href="archive/20260506_0412.html">20260506_0412</a>
+<a href="archive/20260505_0423.html">20260505_0423</a>
+<a href="archive/20260504_0356.html">20260504_0356</a>
+<a href="archive/20260503_0356.html">20260503_0356</a>
+<a href="archive/20260502_0409.html">20260502_0409</a>
+<a href="archive/20260501_0413.html">20260501_0413</a>
+<a href="archive/20260430_0415.html">20260430_0415</a>
+<a href="archive/20260429_0422.html">20260429_0422</a>
+<a href="archive/20260428_0413.html">20260428_0413</a>
+<a href="archive/20260427_0351.html">20260427_0351</a>
+<a href="archive/20260426_0349.html">20260426_0349</a>
+<a href="archive/20260425_0355.html">20260425_0355</a>
+<a href="archive/20260424_0409.html">20260424_0409</a>
+<a href="archive/20260423_0409.html">20260423_0409</a>
+<a href="archive/20260422_0408.html">20260422_0408</a>
+<a href="archive/20260421_0402.html">20260421_0402</a>
+<a href="archive/20260420_0345.html">20260420_0345</a>
+<a href="archive/20260419_0344.html">20260419_0344</a>
+<a href="archive/20260418_0400.html">20260418_0400</a>
+<a href="archive/20260417_0403.html">20260417_0403</a>
+<a href="archive/20260416_0406.html">20260416_0406</a>
+<a href="archive/20260415_0409.html">20260415_0409</a>
+<a href="archive/20260414_0410.html">20260414_0410</a>
+<a href="archive/20260413_0342.html">20260413_0342</a>
+<a href="archive/20260412_0339.html">20260412_0339</a>
+<a href="archive/20260411_0349.html">20260411_0349</a>
+<a href="archive/20260410_0404.html">20260410_0404</a>
+<a href="archive/20260409_0401.html">20260409_0401</a>
+<a href="archive/20260408_0403.html">20260408_0403</a>
+<a href="archive/20260407_0355.html">20260407_0355</a>
+<a href="archive/20260406_0339.html">20260406_0339</a>
+<a href="archive/20260405_0336.html">20260405_0336</a>
+<a href="archive/20260404_0342.html">20260404_0342</a>
+<a href="archive/20260403_0354.html">20260403_0354</a>
+<a href="archive/20260401_0357.html">20260401_0357</a>
+<a href="archive/20260331_0358.html">20260331_0358</a>
+<a href="archive/20260329_0339.html">20260329_0339</a>
+<a href="archive/20260328_0343.html">20260328_0343</a>
+<a href="archive/20260327_0401.html">20260327_0401</a>
+<a href="archive/20260326_0350.html">20260326_0350</a>
+<a href="archive/20260325_0356.html">20260325_0356</a>
+<a href="archive/20260324_0353.html">20260324_0353</a>
+<a href="archive/20260323_0332.html">20260323_0332</a>
+<a href="archive/20260322_0331.html">20260322_0331</a>
+<a href="archive/20260321_0340.html">20260321_0340</a>
+<a href="archive/20260320_0350.html">20260320_0350</a>
+<a href="archive/20260319_0351.html">20260319_0351</a>
+<a href="archive/20260318_0401.html">20260318_0401</a>
+<a href="archive/20260317_0355.html">20260317_0355</a>
+<a href="archive/20260316_0334.html">20260316_0334</a>
+<a href="archive/20260315_0333.html">20260315_0333</a>
+<a href="archive/20260314_0337.html">20260314_0337</a>
+<a href="archive/20260313_0346.html">20260313_0346</a>
+<a href="archive/20260312_1756.html">20260312_1756</a>
+<a href="archive/20260312_0344.html">20260312_0344</a>
+<a href="archive/20260311_2028.html">20260311_2028</a>
+<a href="archive/20260311_2025.html">20260311_2025</a>
+<a href="archive/20260311_1918.html">20260311_1918</a>
+<a href="archive/20260311_1813.html">20260311_1813</a>
+<a href="archive/20260311_1808.html">20260311_1808</a>
+<a href="archive/20260311_1804.html">20260311_1804</a>
+<a href="archive/20260311_1800.html">20260311_1800</a>
+<a href="archive/20260311_1733.html">20260311_1733</a>
+<a href="archive/20260311_1644.html">20260311_1644</a>
+<a href="archive/20260309_0338.html">20260309_0338</a>
+<a href="archive/20260308_0337.html">20260308_0337</a>
+<a href="archive/20260307_0347.html">20260307_0347</a>
+<a href="archive/20260306_0402.html">20260306_0402</a>
+<a href="archive/20260305_0348.html">20260305_0348</a>
+<a href="archive/20260304_0348.html">20260304_0348</a>
+<a href="archive/20260303_0348.html">20260303_0348</a>
+<a href="archive/20260302_0336.html">20260302_0336</a>
+<a href="archive/20260301_0339.html">20260301_0339</a>
+<a href="archive/20260228_0348.html">20260228_0348</a>
+<a href="archive/20260227_0354.html">20260227_0354</a>
+<a href="archive/20260226_0402.html">20260226_0402</a>
+<a href="archive/20260225_0404.html">20260225_0404</a>
+<a href="archive/20260224_0406.html">20260224_0406</a>
+<a href="archive/20260223_0338.html">20260223_0338</a>
+<a href="archive/20260222_0339.html">20260222_0339</a>
+<a href="archive/20260221_0345.html">20260221_0345</a>
+<a href="archive/20260220_0348.html">20260220_0348</a>
+<a href="archive/20260219_0358.html">20260219_0358</a>
+<a href="archive/20260218_0358.html">20260218_0358</a>
+<a href="archive/20260217_0343.html">20260217_0343</a>
+<a href="archive/20260216_0339.html">20260216_0339</a>
+<a href="archive/20260215_0338.html">20260215_0338</a>
+<a href="archive/20260213_0401.html">20260213_0401</a>
+<a href="archive/20260212_0404.html">20260212_0404</a>
+<a href="archive/20260210_0409.html">20260210_0409</a>
+<a href="archive/20260208_0339.html">20260208_0339</a>
+<a href="archive/20260207_0349.html">20260207_0349</a>
+<a href="archive/20260206_0347.html">20260206_0347</a>
+<a href="archive/20260205_0346.html">20260205_0346</a>
+<a href="archive/20260204_0354.html">20260204_0354</a>
+<a href="archive/20260202_0337.html">20260202_0337</a>
+<a href="archive/20260201_0333.html">20260201_0333</a>
+<a href="archive/20260131_0345.html">20260131_0345</a>
+<a href="archive/20260130_0341.html">20260130_0341</a>
+<a href="archive/20260129_0344.html">20260129_0344</a>
+<a href="archive/20260128_0341.html">20260128_0341</a>
+<a href="archive/20260127_0338.html">20260127_0338</a>
+<a href="archive/20260126_0330.html">20260126_0330</a>
+<a href="archive/20260125_0329.html">20260125_0329</a>
+<a href="archive/20260124_0337.html">20260124_0337</a>
+<a href="archive/20260123_0337.html">20260123_0337</a>
+<a href="archive/20260122_0343.html">20260122_0343</a>
+<a href="archive/20260121_0424.html">20260121_0424</a>
+<a href="archive/20260119_0329.html">20260119_0329</a>
+<a href="archive/20260118_0327.html">20260118_0327</a>
+<a href="archive/20260117_0332.html">20260117_0332</a>
+<a href="archive/20260116_0339.html">20260116_0339</a>
+<a href="archive/20260115_0334.html">20260115_0334</a>
+<a href="archive/20260114_0333.html">20260114_0333</a>
+<a href="archive/20260113_0334.html">20260113_0334</a>
+<a href="archive/20260112_0331.html">20260112_0331</a>
+<a href="archive/20260111_0329.html">20260111_0329</a>
+<a href="archive/20260110_0333.html">20260110_0333</a>
+<a href="archive/20260109_0334.html">20260109_0334</a>
+<a href="archive/20260108_0335.html">20260108_0335</a>
+<a href="archive/20260107_0330.html">20260107_0330</a>
+<a href="archive/20260106_0336.html">20260106_0336</a>
+<a href="archive/20260105_0328.html">20260105_0328</a>
+<a href="archive/20260104_0328.html">20260104_0328</a>
+<a href="archive/20260103_0325.html">20260103_0325</a>
+<a href="archive/20260102_0339.html">20260102_0339</a>
+<a href="archive/20260101_0329.html">20260101_0329</a>
+<a href="archive/20251231_0333.html">20251231_0333</a>
+<a href="archive/20251230_0332.html">20251230_0332</a>
+<a href="archive/20251229_0329.html">20251229_0329</a>
+<a href="archive/20251228_0332.html">20251228_0332</a>
+<a href="archive/20251227_0329.html">20251227_0329</a>
+<a href="archive/20251226_0330.html">20251226_0330</a>
+<a href="archive/20251225_0329.html">20251225_0329</a>
+<a href="archive/20251224_0331.html">20251224_0331</a>
+<a href="archive/20251223_0332.html">20251223_0332</a>
+<a href="archive/20251222_0328.html">20251222_0328</a>
+<a href="archive/20251221_0329.html">20251221_0329</a>
+<a href="archive/20251220_0330.html">20251220_0330</a>
+<a href="archive/20251219_0330.html">20251219_0330</a>
+<a href="archive/20251218_0345.html">20251218_0345</a>
+<a href="archive/20251217_0332.html">20251217_0332</a>
+<a href="archive/20251216_0333.html">20251216_0333</a>
+<a href="archive/20251215_0333.html">20251215_0333</a>
+<a href="archive/20251214_0327.html">20251214_0327</a>
+<a href="archive/20251212_0333.html">20251212_0333</a>
+<a href="archive/20251211_0331.html">20251211_0331</a>
+<a href="archive/20251210_0332.html">20251210_0332</a>
+<a href="archive/20251209_0331.html">20251209_0331</a>
+<a href="archive/20251208_0328.html">20251208_0328</a>
+<a href="archive/20251207_0327.html">20251207_0327</a>
+<a href="archive/20251206_0330.html">20251206_0330</a>
+<a href="archive/20251205_0331.html">20251205_0331</a>
+<a href="archive/20251204_0331.html">20251204_0331</a>
+<a href="archive/20251203_0333.html">20251203_0333</a>
+<a href="archive/20251202_0335.html">20251202_0335</a>
+<a href="archive/20251201_0328.html">20251201_0328</a>
+<a href="archive/20251130_0327.html">20251130_0327</a>
+<a href="archive/20251129_0328.html">20251129_0328</a>
+<a href="archive/20251128_0327.html">20251128_0327</a>
+<a href="archive/20251127_0327.html">20251127_0327</a>
+<a href="archive/20251126_0329.html">20251126_0329</a>
+<a href="archive/20251125_0327.html">20251125_0327</a>
+<a href="archive/20251124_0327.html">20251124_0327</a>
+<a href="archive/20251123_0326.html">20251123_0326</a>
+<a href="archive/20251122_0328.html">20251122_0328</a>
+<a href="archive/20251121_0328.html">20251121_0328</a>
+<a href="archive/20251120_0329.html">20251120_0329</a>
+<a href="archive/20251119_0328.html">20251119_0328</a>
+<a href="archive/20251118_0328.html">20251118_0328</a>
+<a href="archive/20251117_0326.html">20251117_0326</a>
+<a href="archive/20251116_0325.html">20251116_0325</a>
+<a href="archive/20251115_0327.html">20251115_0327</a>
+<a href="archive/20251114_0328.html">20251114_0328</a>
+<a href="archive/20251113_0330.html">20251113_0330</a>
+<a href="archive/20251112_0329.html">20251112_0329</a>
+<a href="archive/20251111_0328.html">20251111_0328</a>
+<a href="archive/20251110_0325.html">20251110_0325</a>
+<a href="archive/20251109_0326.html">20251109_0326</a>
+<a href="archive/20251108_0328.html">20251108_0328</a>
+<a href="archive/20251107_0328.html">20251107_0328</a>
+<a href="archive/20251106_0329.html">20251106_0329</a>
+<a href="archive/20251105_0326.html">20251105_0326</a>
+<a href="archive/20251104_0327.html">20251104_0327</a>
+<a href="archive/20251103_0324.html">20251103_0324</a>
+<a href="archive/20251102_0326.html">20251102_0326</a>
+<a href="archive/20251101_0324.html">20251101_0324</a>
+<a href="archive/20251031_0328.html">20251031_0328</a>
+<a href="archive/20251030_0330.html">20251030_0330</a>
+<a href="archive/20251029_0329.html">20251029_0329</a>
+<a href="archive/20251028_0329.html">20251028_0329</a>
+<a href="archive/20251027_0322.html">20251027_0322</a>
+<a href="archive/20251026_0327.html">20251026_0327</a>
+<a href="archive/20251025_0331.html">20251025_0331</a>
+<a href="archive/20251024_0329.html">20251024_0329</a>
+<a href="archive/20251023_0329.html">20251023_0329</a>
+<a href="archive/20251022_0330.html">20251022_0330</a>
+<a href="archive/20251021_0331.html">20251021_0331</a>
+<a href="archive/20251020_0328.html">20251020_0328</a>
+<a href="archive/20251019_0321.html">20251019_0321</a>
+<a href="archive/20251018_0327.html">20251018_0327</a>
+<a href="archive/20251017_0320.html">20251017_0320</a>
+<a href="archive/20251016_0328.html">20251016_0328</a>
+<a href="archive/20251015_0328.html">20251015_0328</a>
+<a href="archive/20251014_0323.html">20251014_0323</a>
+<a href="archive/20251011_0328.html">20251011_0328</a>
+<a href="archive/20251010_0330.html">20251010_0330</a>
+<a href="archive/20251009_0321.html">20251009_0321</a>
+<a href="archive/20251008_0343.html">20251008_0343</a>
+<a href="archive/20251007_0353.html">20251007_0353</a>
+<a href="archive/20251006_0325.html">20251006_0325</a>
+<a href="archive/20251005_0350.html">20251005_0350</a>
+<a href="archive/20251004_0352.html">20251004_0352</a>
+<a href="archive/20251003_0352.html">20251003_0352</a>
+<a href="archive/20251002_0356.html">20251002_0356</a>
+<a href="archive/20251001_0321.html">20251001_0321</a>
+<a href="archive/20250925_0335.html">20250925_0335</a>
+<a href="archive/20250924_0350.html">20250924_0350</a>
+<a href="archive/20250923_0348.html">20250923_0348</a>
+<a href="archive/20250922_0346.html">20250922_0346</a>
+<a href="archive/20250921_0345.html">20250921_0345</a>
+<a href="archive/20250920_0342.html">20250920_0342</a>
+<a href="archive/20250919_0346.html">20250919_0346</a>
+<a href="archive/20250918_0342.html">20250918_0342</a>
+<a href="archive/20250917_0336.html">20250917_0336</a>
+<a href="archive/20250916_0333.html">20250916_0333</a>
+<a href="archive/20250915_0333.html">20250915_0333</a>
+<a href="archive/20250914_0328.html">20250914_0328</a>
+<a href="archive/20250913_0322.html">20250913_0322</a>
+<a href="archive/20250912_0335.html">20250912_0335</a>
+<a href="archive/20250911_0337.html">20250911_0337</a>
+<a href="archive/20250910_0338.html">20250910_0338</a>
+<a href="archive/20250909_0341.html">20250909_0341</a>
+<a href="archive/20250908_0342.html">20250908_0342</a>
+<a href="archive/20250907_0333.html">20250907_0333</a>
+<a href="archive/20250906_0350.html">20250906_0350</a>
+<a href="archive/20250905_0319.html">20250905_0319</a>
+<a href="archive/20250904_0323.html">20250904_0323</a>
+<a href="archive/20250903_0355.html">20250903_0355</a>
+<a href="archive/20250902_0325.html">20250902_0325</a>
+<a href="archive/20250901_0355.html">20250901_0355</a>
+<a href="archive/20250831_0355.html">20250831_0355</a>
+<a href="archive/20250830_0356.html">20250830_0356</a>
+<a href="archive/20250829_0355.html">20250829_0355</a>
+<a href="archive/20250828_0333.html">20250828_0333</a>
+<a href="archive/20250827_1654.html">20250827_1654</a>
+<a href="archive/20250827_1602.html">20250827_1602</a>
+<a href="archive/20250827_1557.html">20250827_1557</a>
+<a href="archive/20250827_0320.html">20250827_0320</a>
+<a href="archive/20250826_0320.html">20250826_0320</a>
+<a href="archive/20250825_1752.html">20250825_1752</a>
+<a href="archive/20250825_1709.html">20250825_1709</a>
+<a href="archive/20250825_1652.html">20250825_1652</a>
+<a href="archive/20250825_1647.html">20250825_1647</a>
+<a href="archive/20250825_1645.html">20250825_1645</a>
+<a href="archive/20250825_1631.html">20250825_1631</a>
+<a href="archive/20250825_1606.html">20250825_1606</a>
+<a href="archive/20250825_1559.html">20250825_1559</a>
+<a href="archive/20250825_1558.html">20250825_1558</a>
+<a href="archive/20250825_1556.html">20250825_1556</a>
+<a href="archive/20250825_1531.html">20250825_1531</a>
+<a href="archive/20250825_1525.html">20250825_1525</a>
+<a href="archive/20250825_1516.html">20250825_1516</a>
+<a href="archive/20250825_1450.html">20250825_1450</a>
+<a href="archive/20250825_1444.html">20250825_1444</a>
+<a href="archive/20250825_1438.html">20250825_1438</a>
+<a href="archive/20250825_1414.html">20250825_1414</a>
+<a href="archive/20250825_1413.html">20250825_1413</a>
+<a href="archive/20250825_1410.html">20250825_1410</a>
+<a href="archive/20250825_1408.html">20250825_1408</a>
+<a href="archive/20250825_1405.html">20250825_1405</a>
+<a href="archive/20250825_1401.html">20250825_1401</a>
+<a href="archive/20250825_1355.html">20250825_1355</a>
+<a href="archive/20250825_1347.html">20250825_1347</a>
+<a href="archive/20250825_1345.html">20250825_1345</a>
+<a href="archive/20250825_1344.html">20250825_1344</a>
+<a href="archive/20250825_1343.html">20250825_1343</a>
+<a href="archive/20250825_1340.html">20250825_1340</a>
+<a href="archive/20250825_1339.html">20250825_1339</a>
+<a href="archive/20250825_1333.html">20250825_1333</a>
+<a href="archive/20250825_1323.html">20250825_1323</a>
+<a href="archive/20250825_1317.html">20250825_1317</a>
+<a href="archive/20250825_1243.html">20250825_1243</a>
+<a href="archive/20250824_0342.html">20250824_0342</a>
+<a href="archive/20250823_0343.html">20250823_0343</a>
+<a href="archive/20250823_0142.html">20250823_0142</a>
+<a href="archive/20250822_2331.html">20250822_2331</a>
+<a href="archive/20250822_2308.html">20250822_2308</a>
+<a href="archive/20250822_2258.html">20250822_2258</a>
+<a href="archive/20250822_2241.html">20250822_2241</a>
+<a href="archive/20250822_2228.html">20250822_2228</a>
+<a href="archive/20250822_2206.html">20250822_2206</a>
+<a href="archive/20250822_2147.html">20250822_2147</a>
+<a href="archive/20250822_2111.html">20250822_2111</a>
+<a href="archive/20250822_1259.html">20250822_1259</a>
+<a href="archive/20250822_1233.html">20250822_1233</a>
+<a href="archive/20250822_1229.html">20250822_1229</a>
+<a href="archive/20250822_1223.html">20250822_1223</a>
+<a href="archive/20250822_1210.html">20250822_1210</a>
+<a href="archive/20250822_1201.html">20250822_1201</a>
+<a href="archive/20250822_1111.html">20250822_1111</a>
+<a href="archive/20250822_1058.html">20250822_1058</a>
+<a href="archive/20250822_1052.html">20250822_1052</a>
+<a href="archive/20250822_1045.html">20250822_1045</a>
+<a href="archive/20250822_0657.html">20250822_0657</a>
+<a href="archive/20250822_0553.html">20250822_0553</a></div>
+    </details>
+    <div class="footer">Generated by arxiv-tracker</div>
+  </div>
+</body></html>
